@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northline Supply — Boots &amp; Outdoor</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; color:#1b1b1b; background:#fff; }
+  header { display:flex; align-items:center; justify-content:space-between; padding:18px 32px; border-bottom:1px solid #ececec; }
+  .logo { font-weight:700; letter-spacing:-.02em; font-size:19px; }
+  nav a { margin-left:22px; color:#5f5f5f; text-decoration:none; font-size:14px; }
+  .hero { padding:64px 32px; max-width:1080px; margin:0 auto; }
+  .hero h1 { font-size:44px; line-height:1.08; margin:0 0 14px; letter-spacing:-.03em; }
+  .hero p { color:#5f5f5f; max-width:560px; font-size:17px; line-height:1.6; margin:0; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:22px; max-width:1080px; margin:0 auto; padding:0 32px 80px; }
+  .item { border:1px solid #ececec; border-radius:12px; overflow:hidden; }
+  .swatch { height:170px; }
+  .item p { margin:0; padding:12px 14px; font-size:14px; }
+  .item span { display:block; padding:0 14px 14px; color:#5f5f5f; font-size:13px; }
+  footer { border-top:1px solid #ececec; padding:26px 32px; color:#8a8a8a; font-size:13px; }
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">NORTHLINE SUPPLY</span>
+  <nav><a href="#">Boots</a><a href="#">Jackets</a><a href="#">Packs</a><a href="#">Support</a></nav>
+</header>
+
+<section class="hero">
+  <h1>Built for the trail,<br>graded for the city.</h1>
+  <p>Waterproof leather, resoleable, and shipped across the EU. Questions about delivery or returns? Ask the assistant in the corner.</p>
+</section>
+
+<div class="grid">
+  <div class="item"><div class="swatch" style="background:#3f3a33"></div><p>Ridge Boot — Umber</p><span>€219</span></div>
+  <div class="item"><div class="swatch" style="background:#6b5844"></div><p>Ridge Boot — Tan</p><span>€219</span></div>
+  <div class="item"><div class="swatch" style="background:#2c3138"></div><p>Fell Jacket — Slate</p><span>€289</span></div>
+  <div class="item"><div class="swatch" style="background:#7a4a32"></div><p>Haul Pack 32L</p><span>€149</span></div>
+</div>
+
+<footer>Demo storefront used to show the Helpdock widget running on a third-party site.</footer>
+
+<script>
+  var key = new URLSearchParams(window.location.search).get('key');
+  var origin = new URLSearchParams(window.location.search).get('origin') || window.location.origin;
+  if (key) {
+    var tag = document.createElement('script');
+    tag.src = origin + '/widget.js';
+    tag.setAttribute('data-helpdock', key);
+    tag.setAttribute('data-accent', '#3f3a33');
+    document.body.appendChild(tag);
+  }
+</script>
+</body>
+</html>

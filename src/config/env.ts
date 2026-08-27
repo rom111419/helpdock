@@ -12,6 +12,7 @@ export const publicEnv = {
   supabaseAnonKey: optional(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
   stripePublishableKey: optional(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY),
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+  demoBotKey: optional(process.env.NEXT_PUBLIC_DEMO_BOT_KEY),
 };
 
 export function serverEnv() {

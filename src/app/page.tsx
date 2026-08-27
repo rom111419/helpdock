@@ -6,6 +6,7 @@ import { Features } from '@/components/marketing/Features';
 import { PricingTable } from '@/components/marketing/PricingTable';
 import { FinalCta } from '@/components/marketing/FinalCta';
 import { SiteFooter } from '@/components/marketing/SiteFooter';
+import { DemoWidget } from '@/components/marketing/DemoWidget';
 import { currentUser } from '@/lib/session';
 
 export default async function LandingPage() {
@@ -24,6 +25,7 @@ export default async function LandingPage() {
         <FinalCta />
       </main>
       <SiteFooter />
+      <DemoWidget />
     </>
   );
 }

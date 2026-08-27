@@ -1,9 +1,10 @@
 (function () {
-  var script = document.currentScript;
+  var script = document.currentScript || document.querySelector('script[data-helpdock]');
   if (!script) return;
 
   var key = script.getAttribute('data-helpdock');
-  if (!key) return;
+  if (!key || script.getAttribute('data-helpdock-mounted') === '1') return;
+  script.setAttribute('data-helpdock-mounted', '1');
 
   var origin = new URL(script.src, window.location.href).origin;
   var accent = script.getAttribute('data-accent') || '#c2410c';
