@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import type { User } from '@supabase/supabase-js';
 import { publicEnv } from '@/config/env';
 import { createClient } from '@/lib/supabase/server';
@@ -15,4 +16,10 @@ export async function currentUser(): Promise<User | null> {
   } catch {
     return null;
   }
+}
+
+export async function requireUser(): Promise<User> {
+  const user = await currentUser();
+  if (!user) redirect('/login');
+  return user;
 }
