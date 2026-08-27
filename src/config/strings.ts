@@ -130,7 +130,7 @@ export const app = {
     sources: 'sources',
     open: 'Open',
   },
-  tabs: { sources: 'Knowledge', chat: 'Chat', embed: 'Embed', inbox: 'Inbox', settings: 'Settings' },
+  tabs: { sources: 'Knowledge', chat: 'Chat', embed: 'Embed', inbox: 'Inbox' },
   sources: {
     title: 'Knowledge',
     subtitle: 'What this chatbot is allowed to answer from.',
@@ -172,6 +172,10 @@ export const app = {
     personaPlaceholder: 'Warm and brief. Always offer the tracking link when delivery comes up.',
     save: 'Save',
     saved: 'Saved',
+    danger: 'Delete this chatbot',
+    dangerHint: 'Its knowledge, conversations and embed code are removed for good.',
+    delete: 'Delete',
+    cancel: 'Cancel',
   },
   inbox: {
     title: 'Inbox',

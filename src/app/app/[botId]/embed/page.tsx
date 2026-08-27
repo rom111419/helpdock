@@ -8,6 +8,7 @@ import { loadBot } from '@/services/botService';
 import { loadProfile } from '@/services/quotaService';
 import { EmbedSnippet } from '@/components/app/EmbedSnippet';
 import { AppearanceForm } from '@/components/app/AppearanceForm';
+import { DeleteBot } from '@/components/app/DeleteBot';
 
 export default async function EmbedPage(props: PageProps<'/app/[botId]/embed'>) {
   const { botId } = await props.params;
@@ -29,6 +30,7 @@ export default async function EmbedPage(props: PageProps<'/app/[botId]/embed'>) 
 
         <h3 className="mt-10 text-lg font-medium">{app.embed.appearance}</h3>
         <AppearanceForm bot={bot} personaAllowed={plan.features.customPersona} />
+        <DeleteBot botId={bot.id} />
       </section>
 
       <section>

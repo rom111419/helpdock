@@ -37,7 +37,9 @@ export async function streamAnswer(
   context: RetrievedContext,
 ): Promise<AsyncGenerator<string>> {
   const ai = new GoogleGenAI({ apiKey: serverEnv().geminiApiKey });
-  const contents = [...history, { role: 'user' as const, content: question }].map((turn) => ({
+  const leading = history.findIndex((turn) => turn.role === 'user');
+  const usable = leading === -1 ? [] : history.slice(leading);
+  const contents = [...usable, { role: 'user' as const, content: question }].map((turn) => ({
     role: turn.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: turn.content }],
   }));

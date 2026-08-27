@@ -20,13 +20,13 @@ export function PlanActions({
   const [portalState, portal, portalPending] = useActionState(portalAction, emptyActionState);
   const error = checkoutState.error || portalState.error;
 
-  if (tier === 'free' && !compact) {
-    return <p className="text-sm text-muted">{enabled ? '' : app.billing.disabled}</p>;
+  if (tier === 'free') {
+    return enabled ? null : <p className="text-sm text-muted">{app.billing.disabled}</p>;
   }
 
   return (
     <div className={cn(compact ? 'mt-6' : '')}>
-      {compact && tier !== 'free' ? (
+      {compact ? (
         <form action={checkout}>
           <input type="hidden" name="tier" value={tier} />
           <button type="submit" disabled={!enabled || checkoutPending} className="btn btn-primary w-full py-2.5 text-sm">
@@ -35,7 +35,7 @@ export function PlanActions({
         </form>
       ) : null}
 
-      {!compact && tier !== 'free' ? (
+      {!compact ? (
         <form action={portal}>
           <button type="submit" disabled={!enabled || portalPending} className="btn btn-ghost px-5 py-2.5 text-sm">
             {app.billing.manage}
