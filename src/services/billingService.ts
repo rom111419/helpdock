@@ -1,22 +1,22 @@
 import Stripe from 'stripe';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { serverEnv } from '@/config/env';
+import { stripeEnv } from '@/config/env';
 import { PLANS, type PlanTier } from '@/config/plans';
 import type { Profile } from '@/lib/supabase/types';
 
 export type CheckoutTarget = Extract<PlanTier, 'pro' | 'business'>;
 
 export function billingEnabled(): boolean {
-  return Boolean(serverEnv().stripeSecretKey);
+  return Boolean(stripeEnv().secretKey);
 }
 
 function stripe(): Stripe {
-  return new Stripe(serverEnv().stripeSecretKey);
+  return new Stripe(stripeEnv().secretKey);
 }
 
 function priceIdFor(tier: CheckoutTarget): string {
-  const env = serverEnv();
-  const priceId = tier === 'pro' ? env.stripePricePro : env.stripePriceBusiness;
+  const env = stripeEnv();
+  const priceId = tier === 'pro' ? env.pricePro : env.priceBusiness;
   if (!priceId) throw new Error(`No Stripe price configured for the ${PLANS[tier].name} plan.`);
   return priceId;
 }
@@ -36,7 +36,7 @@ export async function createCheckoutSession(
   profile: Profile,
   tier: CheckoutTarget,
 ): Promise<string> {
-  const env = serverEnv();
+  const env = stripeEnv();
   const customer = await customerIdFor(client, profile);
   const session = await stripe().checkout.sessions.create({
     mode: 'subscription',
@@ -55,13 +55,13 @@ export async function createPortalSession(profile: Profile): Promise<string> {
   if (!profile.stripe_customer_id) throw new Error('This account has no billing history yet.');
   const session = await stripe().billingPortal.sessions.create({
     customer: profile.stripe_customer_id,
-    return_url: `${serverEnv().siteUrl}/app/billing`,
+    return_url: `${stripeEnv().siteUrl}/app/billing`,
   });
   return session.url;
 }
 
 export function constructEvent(payload: string, signature: string): Stripe.Event {
-  return stripe().webhooks.constructEvent(payload, signature, serverEnv().stripeWebhookSecret);
+  return stripe().webhooks.constructEvent(payload, signature, stripeEnv().webhookSecret);
 }
 
 function tierFromMetadata(metadata: Stripe.Metadata | null): PlanTier {

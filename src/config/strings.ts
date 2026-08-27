@@ -204,6 +204,9 @@ export const app = {
     unsupportedFile: 'Upload a PDF, Markdown or plain text file.',
     emptyUrl: 'Enter a valid URL starting with http or https.',
     notFound: 'That chatbot does not exist or is not yours.',
+    noProfile: 'Your account is still being set up. Reload the page and try again.',
+    nameRequired: 'Give the chatbot a name.',
+    titleRequired: 'Give this note a title and some text.',
   },
 };
 

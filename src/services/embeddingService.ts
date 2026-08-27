@@ -1,12 +1,12 @@
 import { GoogleGenAI } from '@google/genai';
-import { models, serverEnv } from '@/config/env';
+import { models, geminiEnv } from '@/config/env';
 
 const DOCUMENT_TASK = 'RETRIEVAL_DOCUMENT';
 const QUERY_TASK = 'RETRIEVAL_QUERY';
 const BATCH_SIZE = 32;
 
 function client(): GoogleGenAI {
-  return new GoogleGenAI({ apiKey: serverEnv().geminiApiKey });
+  return new GoogleGenAI({ apiKey: geminiEnv().apiKey });
 }
 
 async function embed(texts: string[], taskType: string): Promise<number[][]> {

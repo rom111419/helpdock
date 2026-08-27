@@ -22,7 +22,7 @@ export async function createChatbotAction(
   const user = await requireUser();
   const supabase = await createClient();
   const profile = await loadProfile(supabase, user.id);
-  if (!profile) return { error: app.errors.generic };
+  if (!profile) return { error: app.errors.noProfile };
 
   const usage = await loadUsage(supabase, user.id, profile.plan);
   const check = canCreateChatbot(usage);
@@ -30,9 +30,14 @@ export async function createChatbotAction(
 
   const name = String(formData.get('name') ?? '').trim();
   const welcome = String(formData.get('welcome_message') ?? '').trim();
-  if (!name) return { error: app.errors.generic };
+  if (!name) return { error: app.errors.nameRequired };
 
-  const bot = await createBot(supabase, user.id, name, welcome);
+  let bot;
+  try {
+    bot = await createBot(supabase, user.id, name, welcome);
+  } catch (cause) {
+    return { error: cause instanceof Error ? cause.message : app.errors.generic };
+  }
   revalidatePath('/app');
   redirect(`/app/${bot.id}/sources`);
 }

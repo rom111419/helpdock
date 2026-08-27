@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { models, serverEnv } from '@/config/env';
+import { models, geminiEnv } from '@/config/env';
 import type { RetrievedContext } from '@/services/retrievalService';
 
 export type ChatTurn = {
@@ -36,7 +36,7 @@ export async function streamAnswer(
   persona: string,
   context: RetrievedContext,
 ): Promise<AsyncGenerator<string>> {
-  const ai = new GoogleGenAI({ apiKey: serverEnv().geminiApiKey });
+  const ai = new GoogleGenAI({ apiKey: geminiEnv().apiKey });
   const leading = history.findIndex((turn) => turn.role === 'user');
   const usable = leading === -1 ? [] : history.slice(leading);
   const contents = [...usable, { role: 'user' as const, content: question }].map((turn) => ({

@@ -64,3 +64,13 @@ returns integer
 language sql stable set search_path = public as $$
   select coalesce(sum(char_count), 0)::integer from sources where owner_id = target_owner;
 $$;
+
+grant usage on schema public to anon, authenticated;
+
+grant select, insert, update, delete on
+  profiles, chatbots, sources, chunks, conversations, messages
+  to authenticated;
+
+grant execute on function match_chunks(uuid, vector, integer) to authenticated;
+grant execute on function count_messages_this_month(uuid) to authenticated;
+grant execute on function count_chars_for_owner(uuid) to authenticated;
