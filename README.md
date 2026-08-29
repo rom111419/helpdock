@@ -52,7 +52,7 @@ Stripe is optional: with no Stripe keys the billing screen says so and the check
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` | Supabase project → Settings → API |
 | `GEMINI_API_KEY` | Google AI Studio |
-| `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe dashboard in **Test mode** |
+| `STRIPE_SECRET_KEY` | Stripe dashboard in **Test mode** (Checkout is a server-side redirect, so no publishable key is needed) |
 | `STRIPE_WEBHOOK_SECRET` | `stripe listen --forward-to localhost:3000/api/stripe/webhook` |
 | `STRIPE_PRICE_PRO`, `STRIPE_PRICE_BUSINESS` | Stripe → Products → recurring monthly prices |
 | `NEXT_PUBLIC_SITE_URL` | The public origin; used in the embed snippet and Stripe redirects |

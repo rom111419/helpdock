@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@google/genai": "^2.19.0",
-    "@stripe/stripe-js": "^9.14.0",
     "@supabase/ssr": "^0.12.5",
     "@supabase/supabase-js": "^2.112.4",
     "clsx": "^2.1.1",
