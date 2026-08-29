@@ -33,11 +33,18 @@ Built as the demo project for the Paralect Product Academy assignment *Embeddabl
 
 ## Running it
 
+The fastest path is the local Supabase stack — it applies both migrations for you and needs no cloud account.
+
 ```bash
 pnpm install
-cp .env.example .env.local   # fill in the values below
+pnpm exec supabase start          # prints the URL and the anon / service_role keys
+cp .env.example .env.local        # paste those three values in, plus a Gemini key
 pnpm dev
 ```
+
+`supabase start` needs Docker. It runs on ports 547xx so it does not collide with a default Supabase install. Stop it with `pnpm exec supabase stop`.
+
+Stripe is optional: with no Stripe keys the billing screen says so and the checkout buttons stay disabled. Everything else — knowledge, chat, widget, plan limits — works without it.
 
 ### Environment
 
@@ -60,6 +67,8 @@ Run the two migrations in `supabase/migrations` against the project, in order, f
 ```bash
 pnpm exec playwright test
 ```
+
+24 tests across desktop and mobile viewports. They drive a real browser against a real Supabase and a real model: a source is uploaded and indexed, the chat is asked a question only that document can answer, the widget is mounted on a separate page by its script tag, and the plan gates are checked on both sides of an upgrade. They need `.env.local` filled in, including `GEMINI_API_KEY`.
 
 ## How retrieval works
 
