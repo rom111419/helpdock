@@ -117,3 +117,43 @@ test('a PDF and a web page both reach the ready state', async ({ page, baseURL }
     page.locator('main p').filter({ hasText: /five to seven|5 to 7|5-7/i }).first(),
   ).toBeVisible({ timeout: 90_000 });
 });
+
+test('the script tag mounts the widget on a third-party page and it answers there', async ({ page }) => {
+  test.setTimeout(180_000);
+
+  await page.goto('/login?mode=signup');
+  await page.getByLabel(auth.email).fill(`embed${Date.now()}@example.com`);
+  await page.getByLabel(auth.password).fill(PASSWORD);
+  await page.getByRole('button', { name: auth.signUp }).click();
+  await page.waitForURL('**/app');
+
+  await page.getByRole('button', { name: app.bots.create }).click();
+  await page.getByLabel(app.bots.nameLabel).fill('Northline Supply');
+  await page.getByRole('button', { name: app.bots.submit }).click();
+  await page.waitForURL('**/sources');
+  const botId = page.url().split('/app/')[1].split('/')[0];
+
+  await page.getByRole('button', { name: 'text' }).click();
+  await page.getByPlaceholder(app.sources.textTitlePlaceholder).fill('Shipping and returns');
+  await page.locator('textarea[name="body"]').fill(KNOWLEDGE);
+  await page.getByRole('button', { name: app.sources.add }).click();
+  await expect(page.getByText(app.sources.status.ready)).toBeVisible({ timeout: 90_000 });
+
+  await page.goto(`/app/${botId}/embed`);
+  const snippet = await page.locator('pre code').innerText();
+  const publicKey = snippet.match(/data-helpdock="([0-9a-f]{32})"/)?.[1];
+  expect(publicKey).toBeTruthy();
+
+  await page.goto(`/storefront-demo.html?key=${publicKey}`);
+  await expect(page.getByRole('heading', { name: /Built for the trail/i })).toBeVisible();
+
+  const launcher = page.getByRole('button', { name: 'Open chat' });
+  await expect(launcher).toBeVisible({ timeout: 20_000 });
+  await launcher.click();
+
+  const widget = page.frameLocator('iframe[title="Helpdock chat"]');
+  await widget.getByPlaceholder('Ask a question…').fill('How many days for an NL-7788 order?');
+  await widget.getByRole('button', { name: app.chat.send }).click();
+  await expect(widget.locator('p').filter({ hasText: /nine|9/i }).first()).toBeVisible({ timeout: 90_000 });
+  await expect(widget.getByText('Powered by Helpdock')).toBeVisible();
+});
