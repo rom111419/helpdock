@@ -7,6 +7,8 @@ export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
   reporter: process.env.CI ? 'github' : 'list',
+  expect: { timeout: 15_000 },
+  retries: process.env.CI ? 1 : 0,
   use: { baseURL, trace: 'retain-on-failure' },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },

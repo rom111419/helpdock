@@ -41,8 +41,9 @@ test('the free plan refuses a second chatbot and offers the upgrade', async ({ p
   await page.waitForURL('**/sources');
 
   await page.goto('/app');
+  const limit = PLANS.free.limits.chatbots;
+  await expect(page.getByText(`${limit} / ${limit}`, { exact: false })).toBeVisible();
   await expect(page.getByRole('button', { name: app.bots.create })).toBeHidden();
-  await expect(page.getByText(String(PLANS.free.limits.chatbots), { exact: false }).first()).toBeVisible();
   await expect(page.getByRole('link', { name: app.inbox.lockedCta })).toBeVisible();
 });
 
