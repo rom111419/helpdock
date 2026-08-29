@@ -22,7 +22,7 @@ create table chatbots (
   name text not null,
   public_key text not null unique default encode(gen_random_bytes(16), 'hex'),
   welcome_message text not null default '',
-  accent_color text not null default '#2563eb',
+  accent_color text not null default '#c2410c',
   persona text not null default '',
   created_at timestamptz not null default now()
 );

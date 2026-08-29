@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 import { requireUser } from '@/lib/session';
 import { emptyActionState, type ActionState } from '@/lib/actionState';
 import { app } from '@/config/strings';
+import { BRAND_ACCENT } from '@/config/theme';
 import { createBot, deleteBot, updateBot } from '@/services/botService';
 import { canCreateChatbot, loadProfile, loadUsage } from '@/services/quotaService';
 
@@ -54,7 +55,7 @@ export async function updateChatbotAction(
   await updateBot(supabase, botId, {
     name: String(formData.get('name') ?? '').trim(),
     welcome_message: String(formData.get('welcome_message') ?? '').trim(),
-    accent_color: String(formData.get('accent_color') ?? '#2563eb'),
+    accent_color: String(formData.get('accent_color') ?? BRAND_ACCENT),
     persona: String(formData.get('persona') ?? '').trim(),
   });
 
