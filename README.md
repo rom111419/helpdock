@@ -53,14 +53,30 @@ Stripe is optional: with no Stripe keys the billing screen says so and the check
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` | Supabase project → Settings → API |
 | `GEMINI_API_KEY` | Google AI Studio |
 | `STRIPE_SECRET_KEY` | Stripe dashboard in **Test mode** (Checkout is a server-side redirect, so no publishable key is needed) |
-| `STRIPE_WEBHOOK_SECRET` | `stripe listen --forward-to localhost:3000/api/stripe/webhook` |
-| `STRIPE_PRICE_PRO`, `STRIPE_PRICE_BUSINESS` | Stripe → Products → recurring monthly prices |
+| `STRIPE_WEBHOOK_SECRET` | printed by `stripe listen`, or the endpoint's signing secret in the dashboard |
+| `STRIPE_PRICE_PRO`, `STRIPE_PRICE_BUSINESS` | printed by `scripts/setup-stripe.mts` |
 | `NEXT_PUBLIC_SITE_URL` | The public origin; used in the embed snippet and Stripe redirects |
 | `NEXT_PUBLIC_DEMO_BOT_KEY` | Optional. A chatbot's public key — set it and the landing page carries a live widget answering about Helpdock itself |
 
 ### Database
 
-Run the two migrations in `supabase/migrations` against the project, in order, from the Supabase SQL editor or the CLI. They create the schema, the `pgvector` index, row level security policies, the profile trigger and the retrieval function.
+Run the two migrations in `supabase/migrations` against the project, in order, from the Supabase SQL editor or the CLI. They create the schema, the `pgvector` index, row level security policies, the table grants, the profile trigger and the retrieval function.
+
+### Billing
+
+With a Stripe **test** secret key in the environment, create the two products and their monthly prices:
+
+```bash
+STRIPE_SECRET_KEY=sk_test_... node scripts/setup-stripe.mts
+```
+
+It prints the two price IDs to put in `.env.local`. The script is idempotent — it looks each price up by `lookup_key` and reuses it — and it refuses to run against anything that is not a test key.
+
+To receive subscription events locally, forward them with the Stripe CLI and use the signing secret it prints:
+
+```bash
+stripe listen --forward-to http://localhost:3000/api/stripe/webhook
+```
 
 ### Tests
 
