@@ -9,21 +9,24 @@ export type BotSettings = {
 };
 
 export async function listBots(client: SupabaseClient, ownerId: string): Promise<Chatbot[]> {
-  const { data } = await client
+  const { data, error } = await client
     .from('chatbots')
     .select('*')
     .eq('owner_id', ownerId)
     .order('created_at', { ascending: false });
+  if (error) throw new Error(error.message);
   return (data as Chatbot[] | null) ?? [];
 }
 
 export async function loadBot(client: SupabaseClient, botId: string): Promise<Chatbot | null> {
-  const { data } = await client.from('chatbots').select('*').eq('id', botId).maybeSingle();
+  const { data, error } = await client.from('chatbots').select('*').eq('id', botId).maybeSingle();
+  if (error) throw new Error(error.message);
   return (data as Chatbot | null) ?? null;
 }
 
 export async function loadBotByPublicKey(client: SupabaseClient, publicKey: string): Promise<Chatbot | null> {
-  const { data } = await client.from('chatbots').select('*').eq('public_key', publicKey).maybeSingle();
+  const { data, error } = await client.from('chatbots').select('*').eq('public_key', publicKey).maybeSingle();
+  if (error) throw new Error(error.message);
   return (data as Chatbot | null) ?? null;
 }
 

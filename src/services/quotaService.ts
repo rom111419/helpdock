@@ -17,7 +17,8 @@ export type QuotaCheck = {
 const ALLOWED: QuotaCheck = { allowed: true, reason: '' };
 
 export async function loadProfile(client: SupabaseClient, userId: string): Promise<Profile | null> {
-  const { data } = await client.from('profiles').select('*').eq('id', userId).maybeSingle();
+  const { data, error } = await client.from('profiles').select('*').eq('id', userId).maybeSingle();
+  if (error) throw new Error(error.message);
   return (data as Profile | null) ?? null;
 }
 
@@ -27,6 +28,9 @@ export async function loadUsage(client: SupabaseClient, userId: string, tier: Pl
     client.rpc('count_chars_for_owner', { target_owner: userId }),
     client.rpc('count_messages_this_month', { target_owner: userId }),
   ]);
+
+  const failure = bots.error ?? chars.error ?? answers.error;
+  if (failure) throw new Error(failure.message);
 
   return {
     plan: planFor(tier),

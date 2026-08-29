@@ -69,8 +69,8 @@ grant usage on schema public to anon, authenticated;
 
 grant select, insert, update, delete on
   profiles, chatbots, sources, chunks, conversations, messages
-  to authenticated;
+  to authenticated, service_role;
 
-grant execute on function match_chunks(uuid, vector, integer) to authenticated;
-grant execute on function count_messages_this_month(uuid) to authenticated;
-grant execute on function count_chars_for_owner(uuid) to authenticated;
+grant execute on function match_chunks(uuid, vector, integer) to authenticated, service_role;
+grant execute on function count_messages_this_month(uuid) to authenticated, service_role;
+grant execute on function count_chars_for_owner(uuid) to authenticated, service_role;
