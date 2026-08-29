@@ -28,6 +28,7 @@ const baseURL = process.env.E2E_BASE_URL ?? `http://127.0.0.1:${PORT}`;
 export default defineConfig({
   testDir: './e2e',
   tsconfig: './tsconfig.json',
+  globalSetup: './e2e/global-setup.ts',
   fullyParallel: true,
   reporter: process.env.CI ? 'github' : 'list',
   expect: { timeout: 15_000 },
